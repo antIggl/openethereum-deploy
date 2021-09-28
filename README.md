@@ -1,5 +1,5 @@
-# Parity Deploy 
-The parity deploy script is used to generate parity deployment configurations. These can range from a single instance development node to a proof of authority network with an arbitrary amount of authority nodes.  
+# Openethereum Deploy 
+The Openethereum deploy script is used to generate openethereum deployment configurations. These can range from a single instance development node to a proof of authority network with an arbitrary amount of authority nodes.  
 
 # Requirements
 
@@ -10,18 +10,23 @@ Requires:
 2. python pip
 3. docker
 4. docker-compose
-5. ethkey (or this can be downloaded dynamically by the key generation script)
+
+## Before using it
+
+```bash
+git submodule update --init
+```
 
 # CLI Usage Options
 
-There are currently three main options which can be used with the parity-deploy tool. They are:
+There are currently three main options which can be used with the openethereum-deploy tool. They are:
 
 Required:
 
 ```--config``` This option allows you to set the conensus engine of the chain. Multiple methods are supported:
 * instantseal - Instant sealing of blocks for development mode. Expected to be run on a single node.
 * aura - Authority Round consensus engine, where all the authorities take a turn being the block created, based on unix/linux epoch, so the time need to be syncronized between hosts.
-* tendermint - Tendermint is another consensus engine that can be used with parity, however not as well tested as Authority Round.  
+* tendermint - Tendermint is another consensus engine that can be used with openethereum, however not as well tested as Authority Round.  
 * validatorset - Validtor Set is used to transition a chain from one validator to another at a certain block.
 * input.json - Use a custom input chain spec file used on all of the nodes.
 
@@ -48,12 +53,12 @@ Some examples of using the script are:
 
 A single node instant seal node, accessible via 127.0.0.1:8180:
 ```
-./parity-deploy.sh --config dev
+./openethereum-deploy.sh --config dev
 ```
 
 A three node proof of authority chain with one client acessable via 127.0.0.1:8180:
 ```
-./parity-deploy.sh --config aura
+./openethereum-deploy.sh --config aura
 ```
 
 The output of this tool are two main items:
@@ -72,7 +77,7 @@ You will then be able to see the logs by running:
 docker-compose logs -f 
 ```
 
-In these logs you should see a token being generated to login to parity. Alternatively you can run the command:
+In these logs you should see a token being generated to login to openethereum. Alternatively you can run the command:
 ```
 docker-compose logs | grep token
 ```
@@ -96,7 +101,7 @@ Once parity-deploy has been run it will generate configuration files which are k
 
 3. deployment/client - this directory contains the configuration for an instant sealing client. It has key.priv (private key file), key.pub (public key file), address.txt (pre-created client address), password (plain text password file) and client.toml (client's parity config file).
 
-4. deployment/[1/2/3] - these directories are used when you are using multiple aura validators -  It has key.priv (private key file), key.pub (public key file), address.txt (pre-created authority address), password (plain text password file) and authority.toml (authority's parity config file).
+4. deployment/[1/2/3] - these directories are used when you are using multiple aura validators -  It has key.priv (private key file), key.pub (public key file), address.txt (pre-created authority address), password (plain text password file) and authority.toml (authority's openethereum config file).
 
 All of these nodes are then added to the to the chains/reserved_peers file.
 
@@ -132,7 +137,7 @@ All of the chains are templated from the config directory. Inside the config dir
  * config/spec/params/instantseal - This file contains additional parameters for the instantseal chain.
  * config/spec/params/tendermint - This file contains additional parameters for the tendermint chain.
 
-6. config/spec - This directory contains some toml spec files that are used as parity configurations.
+6. config/spec - This directory contains some toml spec files that are used as openethereum configurations.
  * config/spec/authority_round.toml - An example toml file for an aura chain.
  * config/spec/instantseal.toml - An example toml file for an instantseal chain.
  * config/spec/tendermint.tml - An example toml file for a tendermint chain.
