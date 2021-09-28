@@ -1,0 +1,3 @@
+[submodule "config/utils/ethereum-generate-wallet"]
+	path = config/utils/ethereum-generate-wallet
+	url = https://github.com/vkobel/ethereum-generate-wallet.git
