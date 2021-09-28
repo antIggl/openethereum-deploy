@@ -6,7 +6,7 @@ CLIENT="0"
 DOCKER_INCLUDE="include/docker-compose.yml"
 help() {
 
-	echo "parity-deploy.sh OPTIONS
+	echo "openethereum-deploy.sh OPTIONS
 Usage:
 REQUIRED:
         --config dev / aura / tendermint / validatorset / input.json / custom_chain.toml
@@ -16,7 +16,7 @@ OPTIONAL:
         --nodes number_of_nodes (if using aura / tendermint) Default: 2
         --ethstats - Enable ethstats monitoring of authority nodes. Default: Off
         --expose - Expose a specific container on ports 8180 / 8545 / 30303. Default: Config specific
-	--entrypoint - Use custom entrypoint for docker container e.g. /home/parity/bin/parity
+	--entrypoint - Use custom entrypoint for docker container e.g. /home/openethereum/bin/openethereum
 
 NOTE:
     input.json - Custom spec files can be inserted by specifiying the path to the json file.
@@ -95,7 +95,7 @@ build_docker_config_poa() {
 	echo "services:" >>docker-compose.yml
 
 	for x in $(seq 1 $CHAIN_NODES); do
-		cat config/docker/authority.yml | sed -e "s/NODE_NAME/$x/g" | sed -e "s@-d /home/parity/data@-d /home/parity/data $PARITY_OPTIONS@g" >>docker-compose.yml
+		cat config/docker/authority.yml | sed -e "s/NODE_NAME/$x/g" | sed -e "s@-d /home/openethereum/data@-d /home/openethereum/data $PARITY_OPTIONS@g" >>docker-compose.yml
 		mkdir -p data/$x
 	done
 
@@ -116,7 +116,7 @@ build_docker_config_ethstats() {
 
 build_docker_config_instantseal() {
 
-	cat config/docker/instantseal.yml | sed -e "s@-d /home/parity/data@-d /home/parity/data $PARITY_OPTIONS@g" >docker-compose.yml
+	cat config/docker/instantseal.yml | sed -e "s@-d /home/openethereum/data@-d /home/openethereum/data $PARITY_OPTIONS@g" >docker-compose.yml
 
 	build_docker_config_ethstats
 
@@ -309,7 +309,7 @@ fi
 
 if [ ! -z "$CHAIN_NETWORK" ]; then
 	if [ ! -z "$PARITY_OPTIONS" ]; then
-		cat config/docker/chain.yml | sed -e "s/CHAIN_NAME/$CHAIN_NETWORK/g" | sed -e "s@-d /home/parity/data@-d /home/parity/data $PARITY_OPTIONS@g" >docker-compose.yml
+		cat config/docker/chain.yml | sed -e "s/CHAIN_NAME/$CHAIN_NETWORK/g" | sed -e "s@-d /home/openethereum/data@-d /home/openethereum/data $PARITY_OPTIONS@g" >docker-compose.yml
 
 	else
 		cat config/docker/chain.yml | sed -e "s/CHAIN_NAME/$CHAIN_NETWORK/g" >docker-compose.yml
@@ -348,7 +348,7 @@ fi
 if [ ! -z $PARITY_RELEASE ]; then
     echo "Custom release ${PARITY_RELEASE} selected. WARNING: This may not be compatible with all parity docker images"
 	DOCKER_TMP=$(mktemp)
-	cat docker-compose.yml | sed -e "s@image: parity/parity:stable@image: parity/parity:${PARITY_RELEASE}@g" > $DOCKER_TMP
+	cat docker-compose.yml | sed -e "s@image: openethereum/openethereum:v3.2.6@image: openethereum/openethereum:${PARITY_RELEASE}@g" > $DOCKER_TMP
 	mv $DOCKER_TMP docker-compose.yml
 fi
 

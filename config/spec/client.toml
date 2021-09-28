@@ -1,11 +1,11 @@
 [parity]
-chain = "/home/parity/spec.json"
+chain = "/home/openethereum/spec.json"
 
 [account]
-password = ["/home/parity/password"]
+password = ["/home/openethereum/password"]
 
 [network]
-reserved_peers = "/home/parity/reserved_peers"
+reserved_peers = "/home/openethereum/reserved_peers"
 
 [websockets]
 disable = false
